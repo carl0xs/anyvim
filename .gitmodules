@@ -1,6 +1,6 @@
 [submodule "nvim-pack"]
 	path = nvim-pack
-	url = https://github.com/carl0xs/nvim-pack.git
+	url = git@github.com:carl0xs/nvim-pack.git
 [submodule "purevim"]
 	path = purevim
-	url = https://github.com/carl0xs/purevim.git
+	url = git@github.com:carl0xs/purevim.git
