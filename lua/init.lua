@@ -279,27 +279,22 @@ require("lazy").setup({
 		end
 	}, 
   {"nvim-pack/nvim-spectre"},
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    -- config = function()
-    --   require("nvim-treesitter.configs").setup({
-    --     ensure_installed = {
-    --       "lua",
-    --       "javascript",
-    --       "typescript",
-    --       "html",
-    --       "css",
-    --       "elixir",
-    --     },
-    --     highlight = {
-    --       enable = true,
-    --     },
-    --     indent = {
-    --       enable = true,
-    --     },
-    --   })
-    -- end,
+  {"nvim-treesitter/nvim-treesitter",
+    config = function()
+      local ts = require("nvim-treesitter")
+      if #ts.get_installed() == 0 then
+        ts.install({ "rust", "javascript", "zig", "bash", "elixir", "ruby" }):wait(300000)
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "rust", "javascript", "zig", "sh", "bash", "elixir", "ruby" },
+        callback = function()
+          vim.treesitter.start()
+          vim.wo.foldmethod = "expr"
+          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        end,
+      })
+    end,
   },
   { 
     "Leviathenn/nvim-transparent"
