@@ -1,7 +1,7 @@
 #!/bin/bash
 
-REPO_URL="https://github.com/carl0xs/nvim-labs.git"
-TARGET_DIR="$HOME/.config/nvim-labs"
+REPO_URL="https://github.com/carl0xs/anyvim.git"
+TARGET_DIR="$HOME/.config/anyvim"
 FISH_CONF="$HOME/.config/fish/config.fish"
 
 # Clone repo if not present
@@ -17,7 +17,7 @@ cat << 'EOF' >> "$FISH_CONF"
 
 # Select and apply a Neovim configuration
 function nv
-    set -l base_dir "$HOME/.config/nvim-labs"
+    set -l base_dir "$HOME/.config/anyvim"
     set -l nvim_dir "$HOME/.config/nvim"
     set -l nvim_backup "$HOME/.config/nvim.backup"
 
