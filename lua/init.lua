@@ -1,4 +1,39 @@
-vim.cmd('source ' .. vim.fn.stdpath('config') .. '/config.vim')
+-- Options
+vim.g.mapleader = " "
+vim.g.transparent_enabled = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.modifiable = true
+vim.opt.clipboard:append("unnamedplus")
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.opt.undofile = true
+vim.opt.number = true
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+vim.opt.foldmethod = "expr"
+vim.opt.foldlevelstart = 99
+vim.opt.termguicolors = true
+vim.opt.updatetime = 300
+vim.opt.relativenumber = true
+
+-- Keymaps
+vim.keymap.set("n", "<leader>cf", ":vsplit ~/.config/nvim/init.lua<CR>")
+vim.keymap.set("n", "<leader>e", ":NvimTreeFindFileToggle<CR>")
+vim.keymap.set("n", "<leader>ff", ":FzfLua files<CR>")
+vim.keymap.set("n", "<leader>fg", ":FzfLua grep_project<CR>")
+vim.keymap.set("n", "<C-s>", ":w!<CR>")
+vim.keymap.set("n", "<C-q>", ":bd<CR>")
+vim.keymap.set("n", "<leader>vs", ":vsplit<CR>")
+vim.keymap.set("n", "<S-h>", ":bprev<CR>")
+vim.keymap.set("n", "<S-l>", ":bnext<CR>")
+vim.keymap.set("n", "<leader>gs", ":FzfLua git_status<CR>")
+vim.keymap.set("n", "<leader>gb", function() require("gitsigns").toggle_current_line_blame() end)
+vim.keymap.set("n", "<leader>ra", function() require("spectre").toggle() end)
+vim.keymap.set("n", "<leader>tr", ":TransparentToggle<CR>")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -32,7 +67,7 @@ require("lazy").setup({
       "ray-x/cmp-treesitter",
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
-      { "Saecki/crates.nvim", requires = { "nvim-lua/plenary.nvim" } },
+      { "Saecki/crates.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 		},
 		config = function()
 			vim.diagnostic.config({
@@ -97,10 +132,6 @@ require("lazy").setup({
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
-					map("<leader>rn", vim.lsp.buf.rename, "re[n]ame symbol")
-
-					map("<leader>ca", vim.lsp.buf.code_action, "code [a]ction")
-
 					map("<leader>co", function()
 						vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
 					end, "code [o]rganize imports")
@@ -108,7 +139,7 @@ require("lazy").setup({
 					map("K", vim.lsp.buf.hover, "Hover Documentation")
 
 					map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-					map("gr", require("fzf-lua").lsp_references, "[G]oto [R]eferences")
+					map("gr", function() require("fzf-lua").lsp_references() end, "[G]oto [R]eferences")
 					map("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
 					map("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
 
@@ -166,7 +197,7 @@ require("lazy").setup({
 				-- ruby_lsp = {},
 				cssls = {},
         elixirls = {},
-				biome = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+				biome = { filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" } },
 				ts_ls = {
 					filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
 					-- TODO: this is not working yet for typescript
@@ -190,22 +221,24 @@ require("lazy").setup({
 				html = {},
 				-- html = { filetypes = { 'html', 'twig', 'hbs'} },
 				lua_ls = {
-					Lua = {
-						workspace = { checkThirdParty = false },
-						telemetry = { enable = false },
-						hint = { enable = true },
-						diagnostics = {
-							enable = true,
-							globals = {
-								"vim",
-								"describe",
-								"it",
-								"before_each",
-								"after_each",
-								"packer_plugins",
-								"MiniTest",
+					settings = {
+						Lua = {
+							workspace = { checkThirdParty = false },
+							telemetry = { enable = false },
+							hint = { enable = true },
+							diagnostics = {
+								enable = true,
+								globals = {
+									"vim",
+									"describe",
+									"it",
+									"before_each",
+									"after_each",
+									"packer_plugins",
+									"MiniTest",
+								},
+								disable = { "missing-fields", "lowercase-global" },
 							},
-							disable = { "missing-fields", "lowercase-global" },
 						},
 					},
 				},
@@ -239,18 +272,12 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"lewis6991/gitsigns.nvim", 
+		"lewis6991/gitsigns.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim"
     },
-	}, 
+	},
 	{ "editorconfig/editorconfig-vim" },
-	{ "ThePrimeagen/refactoring.nvim",
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-treesitter/nvim-treesitter" } 
-		}
-	}, 
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -271,13 +298,13 @@ require("lazy").setup({
     end,
   },
 	{
-		"akinsho/bufferline.nvim", 
+		"akinsho/bufferline.nvim",
 		version = "*", 
 		dependencies = "nvim-tree/nvim-web-devicons", 
 		config = function()
 			require("bufferline").setup()
 		end
-	}, 
+	},
   {"nvim-pack/nvim-spectre"},
   {"nvim-treesitter/nvim-treesitter",
     config = function()
@@ -296,9 +323,9 @@ require("lazy").setup({
       })
     end,
   },
-  { 
+  {
     "Leviathenn/nvim-transparent"
-  }, 
+  },
   {
     'MeanderingProgrammer/markdown.nvim',
     main = "render-markdown",
@@ -306,34 +333,61 @@ require("lazy").setup({
     name = 'render-markdown',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
   },
-  { "ellisonleao/gruvbox.nvim" },
-  { "nvim-tree/nvim-web-devicons" },
-  { "nvim-tree/nvim-tree.lua" }
-})
-
-require("gruvbox").setup({
-  terminal_colors = true, -- add neovim terminal colors
-  undercurl = true,
-  underline = true,
-  bold = true,
-  italic = {
-    strings = true,
-    emphasis = true,
-    comments = true,
-    operators = false,
-    folds = true,
+  { "ellisonleao/gruvbox.nvim",
+    config = function ()
+      require("gruvbox").setup({
+        terminal_colors = true, -- add neovim terminal colors
+        undercurl = true,
+        underline = true,
+        bold = true,
+        italic = {
+          strings = true,
+          emphasis = true,
+          comments = true,
+          operators = false,
+          folds = true,
+        },
+        strikethrough = true,
+        invert_selection = false,
+        invert_signs = false,
+        invert_tabline = false,
+        inverse = true, -- invert background for search, diffs, statuslines and errors
+        contrast = "", -- can be "hard", "soft" or empty string
+        palette_overrides = {},
+        overrides = {},
+        dim_inactive = false,
+        transparent_mode = false,
+      })
+    end
   },
-  strikethrough = true,
-  invert_selection = false,
-  invert_signs = false,
-  invert_tabline = false,
-  inverse = true, -- invert background for search, diffs, statuslines and errors
-  contrast = "", -- can be "hard", "soft" or empty string
-  palette_overrides = {},
-  overrides = {},
-  dim_inactive = false,
-  transparent_mode = false,
+  { "nvim-tree/nvim-web-devicons" },
+  { "nvim-tree/nvim-tree.lua",
+    config = function ()
+      require("nvim-tree").setup()
+    end
+  },
+  { "nvim-lualine/lualine.nvim",
+    config = function ()
+      local lualine = require("lualine")
+      lualine.setup {
+        sections = {
+          lualine_a = {'mode'},
+          lualine_b = {'branch', 'diff', 'diagnostics'},
+          lualine_c = {'filename'},
+          lualine_x = {'encoding', 'fileformat', 'filetype'},
+          lualine_y = {'progress'},
+          lualine_z = {'location'}
+        }
+      }
+    end
+  },
+  {
+    "bngarren/checkmate.nvim",
+    ft = "markdown", -- Lazy loads for Markdown files matching patterns in 'files'
+    opts = {
+      -- files = { "*.md" }, -- any .md file (instead of defaults)
+    },
+  }
 })
 
-require("nvim-tree").setup()
 vim.cmd("colorscheme gruvbox")
