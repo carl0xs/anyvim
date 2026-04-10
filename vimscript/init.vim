@@ -47,8 +47,6 @@ Plug 'sindrets/diffview.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'nvim-tree/nvim-tree.lua'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
@@ -58,7 +56,7 @@ call plug#end()
 
 colorscheme gruvbox
 
-nmap <leader>e :NvimTreeFindFileToggle<CR>
+nmap <leader>e :Vexplore<CR>
 
 let g:NERDTreeIgnore = ['^node_modules$']
 
@@ -113,14 +111,19 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Remap find files
 nmap <leader>ff :Files <CR>
+nmap <leader>fg :Rg<cr>
 nmap <C-s> :w!<CR>
 nmap <C-q> :bd<CR>
-nmap <C-f> :Rg<cr>
 nmap <S-h> :bprev<CR>
 nmap <S-l> :bnext<CR>
-nmap <leader>g :GFiles?<CR>
-nmap <leader>hb :lua require('gitsigns').blame_line({ full = true })<CR>
-nmap <leader>ht :lua require('gitsigns').toggle_current_line_blame()<CR>
+nmap <leader>gs :GFiles?<CR>
+nmap <leader>gb :lua require('gitsigns').toggle_current_line_blame()<CR>
+
+nnoremap <C-j> :m .+1<CR>==
+vnoremap <C-j> :m '>+1<CR>gv=gv
+
+nnoremap <C-k> :m .-2<CR>==
+vnoremap <C-k> :m '<-2<CR>gv=gv
 
 nmap <leader>ca  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
@@ -246,7 +249,6 @@ require("bufferline").setup {
   }
 }
 require("ibl").setup()
-require("nvim-tree").setup()
 require('gitsigns').setup {
   signs = {
     add          = { text = '┃' },

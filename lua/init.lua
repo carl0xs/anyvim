@@ -33,7 +33,12 @@ vim.keymap.set("n", "<S-l>", ":bnext<CR>")
 vim.keymap.set("n", "<leader>gs", ":FzfLua git_status<CR>")
 vim.keymap.set("n", "<leader>gb", function() require("gitsigns").toggle_current_line_blame() end)
 vim.keymap.set("n", "<leader>ra", function() require("spectre").toggle() end)
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==")
+
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==")
 vim.keymap.set("n", "<leader>tr", ":TransparentToggle<CR>")
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
