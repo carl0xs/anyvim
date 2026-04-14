@@ -117,7 +117,9 @@ nmap <C-q> :bd<CR>
 nmap <S-h> :bprev<CR>
 nmap <S-l> :bnext<CR>
 nmap <leader>gs :GFiles?<CR>
-nmap <leader>gb :lua require('gitsigns').toggle_current_line_blame()<CR>
+nmap <leader>gb :Gitsigns toggle_current_line_blame<CR>
+nmap <leader>gn :Gitsigns next_hunk<CR>
+nmap <leader>gp :Gitsigns prev_hunk<CR>
 
 nnoremap <C-j> :m .+1<CR>==
 vnoremap <C-j> :m '>+1<CR>gv=gv
