@@ -1,4 +1,4 @@
--- Options
+--Options
 vim.g.mapleader = " "
 vim.g.transparent_enabled = true
 vim.opt.autoindent = true
@@ -282,7 +282,6 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim"
     },
 	},
-	{ "editorconfig/editorconfig-vim" },
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -327,9 +326,6 @@ require("lazy").setup({
         end,
       })
     end,
-  },
-  {
-    "Leviathenn/nvim-transparent"
   },
   {
     'MeanderingProgrammer/markdown.nvim',
@@ -387,13 +383,6 @@ require("lazy").setup({
     end
   },
   {
-    "bngarren/checkmate.nvim",
-    ft = "markdown", -- Lazy loads for Markdown files matching patterns in 'files'
-    opts = {
-      -- files = { "*.md" }, -- any .md file (instead of defaults)
-    },
-  },
-  {
     "christoomey/vim-tmux-navigator",
     cmd = {
       "TmuxNavigateLeft",
@@ -410,6 +399,18 @@ require("lazy").setup({
       { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
+  },
+  {
+    'stevearc/conform.nvim',
+    config = function ()
+      require("conform").setup({
+        formatter_by_ft = {
+          lua = { "sylua" },
+          rust = { "rustfmt", lsp_format = "fallback" },
+          javascript = { "prettier" }
+        }
+      })
+    end
   }
 })
 
